@@ -12649,9 +12649,95 @@ Iris.UpdateGlobalConfig({
     SelectionImageObjectTransparency       = 0.8,
     SelectionImageObjectBorderColor        = Accent,
     SelectionImageObjectBorderTransparency = 0,
+    TextFont = Font.fromEnum(Enum.Font.Arial),
 })
+
+-- Hub persistent state (created before Init so IDs are stable)
+local _hubSelectedPlayer = Iris.State("")
+local _hubMoneyInput     = Iris.State("")
+local _hubPlayers        = game:GetService("Players")
 
 Iris.Init()
 Iris:Connect(function()
-    Iris.ShowDemoWindow()
+    local lp = _hubPlayers.LocalPlayer
+
+    -- Build other-player list each frame
+    local otherPlayers = {}
+    for _, p in _hubPlayers:GetPlayers() do
+        if p ~= lp then
+            table.insert(otherPlayers, p.Name)
+        end
+    end
+    if _hubSelectedPlayer.value == "" and #otherPlayers > 0 then
+        _hubSelectedPlayer:set(otherPlayers[1])
+    end
+
+    Iris.Window(
+        {"🚌 Jailbreak", false, false, false, true, false, false, false},
+        {size = Iris.State(Vector2.new(290, 400)), position = Iris.State(Vector2.new(85, 70))}
+    )
+    do
+        Iris.TabBar()
+        do
+            -- Players tab
+            Iris.Tab({"👤 Players"})
+            do
+                Iris.SeparatorText({"Self"})
+
+                Iris.SameLine()
+                do
+                    Iris.PushConfig({ContentWidth = UDim.new(1, -105)})
+                    Iris.InputText({"", ""}, {text = _hubMoneyInput})
+                    Iris.PopConfig()
+                    if Iris.Button({"Give Money"}).clicked() then
+                        -- Give money logic here
+                    end
+                end
+                Iris.End()
+
+                if Iris.Button({"Respawn"}).clicked() then
+                    if lp.Character then
+                        lp.Character:BreakJoints()
+                    end
+                end
+
+                Iris.SeparatorText({"Others"})
+
+                Iris.SameLine()
+                do
+                    Iris.PushConfig({ContentWidth = UDim.new(1, -55)})
+                    Iris.Combo({""}, {index = _hubSelectedPlayer})
+                    do
+                        for _, name in otherPlayers do
+                            Iris.Selectable({name, name}, {index = _hubSelectedPlayer})
+                        end
+                    end
+                    Iris.End()
+                    Iris.PopConfig()
+                    if Iris.Button({"Kill"}).clicked() then
+                        local target = _hubPlayers:FindFirstChild(_hubSelectedPlayer.value)
+                        if target and target.Character then
+                            target.Character:BreakJoints()
+                        end
+                    end
+                end
+                Iris.End()
+            end
+            Iris.End()
+
+            -- Weapons tab
+            Iris.Tab({"⚔️ Weapons"})
+            do
+            end
+            Iris.End()
+
+            -- Vehicles tab
+            Iris.Tab({"🚗 Vehicles"})
+            do
+            end
+            Iris.End()
+        end
+        Iris.End()
+    end
+    Iris.End()
 end)
