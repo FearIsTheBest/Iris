@@ -12673,14 +12673,14 @@ Iris:Connect(function()
     end
 
     Iris.Window(
-        {"🚌 Jailbreak", false, false, false, true, false, false, false},
+        {"Jailbreak", false, false, false, true, false, false, false},
         {size = Iris.State(Vector2.new(290, 400)), position = Iris.State(Vector2.new(85, 70))}
     )
     do
         Iris.TabBar()
         do
             -- Players tab
-            Iris.Tab({"👤 Players"})
+            Iris.Tab({"Players"})
             do
                 Iris.SeparatorText({"Self"})
 
@@ -12726,13 +12726,13 @@ Iris:Connect(function()
             Iris.End()
 
             -- Weapons tab
-            Iris.Tab({"⚔️ Weapons"})
+            Iris.Tab({"Weapons"})
             do
             end
             Iris.End()
 
             -- Vehicles tab
-            Iris.Tab({"🚗 Vehicles"})
+            Iris.Tab({"Vehicles"})
             do
             end
             Iris.End()
