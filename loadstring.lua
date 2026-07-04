@@ -4120,18 +4120,19 @@ local _widget_Tab = function(Iris, widgets)
             
             local Bar = Instance.new("Frame")
             Bar.Name = "Bar"
-            Bar.AutomaticSize = Enum.AutomaticSize.Y
-            Bar.Size = UDim2.fromScale(1, 0)
+            Bar.AutomaticSize = Enum.AutomaticSize.None
+            Bar.Size = UDim2.new(1, 0, 0, Iris._config.TextSize + Iris._config.FramePadding.Y * 2)
             Bar.BackgroundTransparency = 1
             Bar.BorderSizePixel = 0
-            
+            Bar.ClipsDescendants = true
+
             widgets.UIListLayout(Bar, Enum.FillDirection.Horizontal, UDim.new(0, Iris._config.ItemInnerSpacing.X))
 
             Bar.Parent = TabBar
 
             local Underline = Instance.new("Frame")
             Underline.Name = "Underline"
-            Underline.Size = UDim2.new(1, 0, 0, 1)
+            Underline.Size = UDim2.new(1, 0, 0, 2)
             Underline.BackgroundColor3 = Iris._config.TabActiveColor
             Underline.BackgroundTransparency = Iris._config.TabActiveTransparency
             Underline.BorderSizePixel = 0
@@ -4253,8 +4254,12 @@ local _widget_Tab = function(Iris, widgets)
                 ActiveTransparency = Iris._config.TabActiveTransparency,
             }
 
-            widgets.UIPadding(Tab, Vector2.new(Iris._config.FramePadding.X, 0))
+            local _tabPad = widgets.UIPadding(Tab, Vector2.new(Iris._config.FramePadding.X, 0))
+            _tabPad.PaddingBottom = UDim.new(0, 6)
             widgets.applyFrameStyle(Tab, true, true)
+            local _tabCorner = Instance.new("UICorner")
+            _tabCorner.CornerRadius = UDim.new(0, 6)
+            _tabCorner.Parent = Tab
             widgets.UIListLayout(Tab, Enum.FillDirection.Horizontal, UDim.new(0, Iris._config.ItemInnerSpacing.X)).VerticalAlignment = Enum.VerticalAlignment.Center
             widgets.applyInteractionHighlights("Background", Tab, Tab, thisWidget.ButtonColors)
             widgets.applyButtonClick(Tab, function()
