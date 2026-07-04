@@ -12661,7 +12661,6 @@ Iris.Init()
 Iris:Connect(function()
     local lp = _hubPlayers.LocalPlayer
 
-    -- Build other-player list each frame
     local otherPlayers = {}
     for _, p in _hubPlayers:GetPlayers() do
         if p ~= lp then
@@ -12673,20 +12672,19 @@ Iris:Connect(function()
     end
 
     Iris.Window(
-        {"Jailbreak", false, false, false, true, false, false, false},
-        {size = Iris.State(Vector2.new(290, 400)), position = Iris.State(Vector2.new(85, 70))}
+        {"Jailbreak", false, false, false, true, false, true, false},
+        {size = Iris.State(Vector2.new(300, 390)), position = Iris.State(Vector2.new(85, 70))}
     )
     do
         Iris.TabBar()
         do
-            -- Players tab
             Iris.Tab({"Players"})
             do
-                Iris.SeparatorText({"Self"})
+                Iris.Text({"Self"})
 
                 Iris.SameLine()
                 do
-                    Iris.PushConfig({ContentWidth = UDim.new(1, -105)})
+                    Iris.PushConfig({ContentWidth = UDim.new(1, -100)})
                     Iris.InputText({"", ""}, {text = _hubMoneyInput})
                     Iris.PopConfig()
                     if Iris.Button({"Give Money"}).clicked() then
@@ -12701,11 +12699,11 @@ Iris:Connect(function()
                     end
                 end
 
-                Iris.SeparatorText({"Others"})
+                Iris.Text({"Others"})
 
                 Iris.SameLine()
                 do
-                    Iris.PushConfig({ContentWidth = UDim.new(1, -55)})
+                    Iris.PushConfig({ContentWidth = UDim.new(1, -50)})
                     Iris.Combo({""}, {index = _hubSelectedPlayer})
                     do
                         for _, name in otherPlayers do
@@ -12725,13 +12723,11 @@ Iris:Connect(function()
             end
             Iris.End()
 
-            -- Weapons tab
             Iris.Tab({"Weapons"})
             do
             end
             Iris.End()
 
-            -- Vehicles tab
             Iris.Tab({"Vehicles"})
             do
             end
